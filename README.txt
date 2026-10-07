@@ -4,7 +4,7 @@ Esta é uma primeira versão de catálogo + carrinho, preparada para publicaçã
 
 ## Antes de publicar
 1. Abra `script.js`.
-2. Troque `WHATSAPP = "5500000000000"` pelo WhatsApp real da MOTUS, usando DDI + DDD + número, sem `+`, espaços ou símbolos.
+2. Troque `WHATSAPP = "5527999802989"` pelo WhatsApp real da MOTUS, usando DDI + DDD + número, sem `+`, espaços ou símbolos.
 3. Substitua os produtos de exemplo pelos produtos reais.
 
 ## Publicar no GitHub Pages
