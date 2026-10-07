@@ -39,7 +39,7 @@ const products = [
   {code:"41300BF0CG08",name:"KIT TRANSMISSAO TITAN 2004- 150",application:"Titan 150 2004-",category:"Transmissão",price:55,featured:true},
   {code:"71827",name:"KIT TRANSMISSAO TITAN 2004- 150",application:"Titan 150 2004-",category:"Transmissão",price:80},
   {code:"91177",name:"KIT TRANSMISSAO TITAN 2015- 160",application:"Titan 160 2015-",category:"Transmissão",price:80},
-  {code:"41300BF0CG15",name:"KIT TRANSMISSAO TITAN 2015- 160",application:"Titan 160 2015-",category:"Transmissão",price:60},
+  {code:"41300BF0CG15",name:"KIT TRANSMISSAO TITAN 2015- 160",application:"Titan 160 2015-",category:"Transmissão",price:65},
   {code:"N1882",name:"PAST FREIO MOTO TITAN-FAN 160 2018- DIANT",application:"Titan 160 • Fan 160",category:"Freio",price:25,featured:true},
   {code:"44110DF0CG01",name:"PAST FREIO MOTO TITAN-FAN 160 2018- DIANT",application:"Titan 160 • Fan 160",category:"Freio",price:18},
   {code:"0302CP",name:"PATIM FREIO MOTO D-T TITAN 2000- BIZ 98-",application:"Titan 2000 • Biz 98-",category:"Freio",price:25},
