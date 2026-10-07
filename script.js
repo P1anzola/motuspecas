@@ -1,6 +1,7 @@
 const WHATSAPP = "5527999802989";
 
 const products = [
+
   {code:"MSC41011",name:"AMORT MOTO NXR 125-150-160 BROS 15- XRE 190 17-20",application:"NXR 125 • NXR 150 • NXR 160 • BROS 15+ • XRE 190 17-20",category:"Suspensão",brand:"COFAP",price:360,image:"assets/MSC41011.jpg",featured:true},
   {code:"CR22540M",name:"AMORT MOTO TITAN 2004-150 MOD ORIG",application:"Titan 150 2004-",category:"Suspensão",brand:"COFAP",price:170,image:"assets/CR22540M.jpg",featured:true},
   {code:"CFAR02CR",name:"ARO RODA TO-TITAN TDS DIANT -18X160-",application:"Titan",category:"Suspensão",brand:"CROMOFORTE",price:90,image:"assets/CFAR02CR.jpg",featured:true},
@@ -59,61 +60,192 @@ const products = [
   {code:"CPR8EA9",name:"VELA MOTO TITAN 2004- 150",application:"Titan 150 2004-",category:"Motor",brand:"NGK",price:30,image:"assets/CPR8EA9.jpg"}
 ];
 
-const money = v => v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const money = v => v.toLocaleString("pt-BR", {style:"currency", currency:"BRL"});
 const wa = msg => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
-let cart=[];
 
-function card(p) {
- const media = p.image
-   ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.parentElement.innerHTML='<span>MP</span>'">`
-   : '<span>MP</span>';
- return `<article class="product">
-   <div class="product-img">${media}</div>
-   <div class="product-body">
-    <h3>${p.name}</h3>
-    <div class="code">CÓDIGO: ${p.code}</div>
-    <div class="code">MARCA: ${p.brand}</div>
-    <div class="code">${p.application}</div>
-    <div class="price">${money(p.price)}</div>
-    <button class="btn gold add" onclick="addToCart('${p.code}')">Adicionar ao pedido</button>
-   </div>
- </article>`;
+let cart = JSON.parse(localStorage.getItem("motus_cart_v3") || "[]");
+
+function saveCart(){ localStorage.setItem("motus_cart_v3", JSON.stringify(cart)); }
+
+function productImage(p){
+  return p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.style.display='none';">` : "";
 }
-function render(list=products) {
- document.querySelector("#products").innerHTML=list.map(card).join("") || '<p>Nenhum produto encontrado.</p>';
- document.querySelector("#featured").innerHTML=products.filter(p=>p.featured).map(card).join("");
+
+function card(p){
+  return `<article class="product">
+    <div class="product-img">${productImage(p)}${p.featured ? '<span class="product-tag">DESTAQUE</span>' : ''}</div>
+    <div class="product-body">
+      <div class="product-meta"><span class="meta-chip">${p.brand || "MOTUS"}</span><span class="meta-chip">${p.category}</span></div>
+      <h3>${p.name}</h3>
+      <div class="code">CÓDIGO: <strong>${p.code}</strong></div>
+      <div class="application">${p.application}</div>
+      <div class="price">${money(p.price)}</div>
+      <button class="btn gold add" type="button" onclick="addToCart('${p.code}')">Adicionar ao pedido</button>
+    </div>
+  </article>`;
 }
-function addToCart(code) {
- const p=products.find(x=>x.code===code);
- const found=cart.find(x=>x.code===code);
- if(found) found.qty++; else cart.push({...p,qty:1});
- renderCart();
+
+function render(list=products){
+  document.querySelector("#products").innerHTML = list.length ? list.map(card).join("") :
+    `<div class="empty"><strong>Nenhuma peça encontrada.</strong><br>Revise o código, descrição ou filtros.</div>`;
+  document.querySelector("#featured").innerHTML = products.filter(p=>p.featured).slice(0,4).map(card).join("");
+  document.querySelector("#resultsInfo").textContent = `${list.length} produto${list.length===1?"":"s"}`;
 }
-function renderCart() {
- document.querySelector("#cartCount").textContent=cart.reduce((s,p)=>s+p.qty,0);
- const box=document.querySelector("#cartItems");
- if(!cart.length){box.innerHTML='<p class="muted">Seu carrinho está vazio.</p>';document.querySelector("#total").textContent=money(0);return;}
- box.innerHTML=cart.map(p=>`<div class="cart-row"><span><strong>${p.qty}x</strong> ${p.name}<br><small>${p.code}</small></span><strong>${money(p.price*p.qty)}</strong></div>`).join("");
- document.querySelector("#total").textContent=money(cart.reduce((s,p)=>s+p.price*p.qty,0));
+
+function updateHeroStats(){
+  document.querySelector("#productCount").textContent = products.length;
+  document.querySelector("#brandCount").textContent = new Set(products.map(p=>p.brand).filter(Boolean)).size;
 }
-function populateCategories() {
- const select=document.querySelector('#category');
- const cats=[...new Set(products.map(p=>p.category))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
- select.innerHTML='<option value="">Todas as categorias</option>'+cats.map(c=>`<option>${c}</option>`).join('');
+
+function populateFilters(){
+  const categories=[...new Set(products.map(p=>p.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
+  const brands=[...new Set(products.map(p=>p.brand).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
+  document.querySelector("#category").innerHTML='<option value="">Todas as categorias</option>'+categories.map(c=>`<option value="${c}">${c}</option>`).join("");
+  document.querySelector("#brand").innerHTML='<option value="">Todas as marcas</option>'+brands.map(b=>`<option value="${b}">${b}</option>`).join("");
 }
-document.querySelector("#search").addEventListener("input",e=>{
- const q=e.target.value.toLowerCase();
- const c=document.querySelector("#category").value;
- render(products.filter(p=>(!q || `${p.name} ${p.application} ${p.code} ${p.brand}`.toLowerCase().includes(q)) && (!c || p.category===c)));
+
+function currentFilteredProducts(){
+  const q=document.querySelector("#search").value.trim().toLowerCase();
+  const category=document.querySelector("#category").value;
+  const brand=document.querySelector("#brand").value;
+  return products.filter(p=>{
+    const hay=`${p.name} ${p.application} ${p.code} ${p.brand}`.toLowerCase();
+    return (!q || hay.includes(q)) && (!category || p.category===category) && (!brand || p.brand===brand);
+  });
+}
+
+function renderFilterChips(){
+  const chips=[];
+  const q=document.querySelector("#search").value.trim();
+  const category=document.querySelector("#category").value;
+  const brand=document.querySelector("#brand").value;
+  if(q) chips.push(`Busca: ${q}`);
+  if(category) chips.push(`Categoria: ${category}`);
+  if(brand) chips.push(`Marca: ${brand}`);
+  document.querySelector("#activeFilters").innerHTML=chips.map(x=>`<span class="filter-chip">${x}</span>`).join("");
+}
+
+function applyFilters(){ render(currentFilteredProducts()); renderFilterChips(); }
+
+function addToCart(code){
+  const p=products.find(x=>x.code===code); if(!p) return;
+  const found=cart.find(x=>x.code===code);
+  if(found) found.qty++; else cart.push({...p,qty:1});
+  saveCart(); renderCart(); openDrawer();
+}
+
+function changeQty(code,delta){
+  const item=cart.find(x=>x.code===code); if(!item) return;
+  item.qty+=delta;
+  if(item.qty<=0) removeItem(code); else saveCart();
+  renderCart();
+}
+
+function removeItem(code){
+  cart=cart.filter(x=>x.code!==code);
+  saveCart();
+  renderCart();
+}
+
+function clearCart(){
+  cart=[]; saveCart(); renderCart();
+}
+
+function cartQty(){ return cart.reduce((sum,p)=>sum+p.qty,0); }
+function cartTotal(){ return cart.reduce((sum,p)=>sum+p.price*p.qty,0); }
+
+function cartRow(p){
+  return `<div class="cart-row">
+    <div class="cart-thumb">${productImage(p)}</div>
+    <div>
+      <div class="cart-title">${p.name}</div>
+      <div class="cart-code">Cód. ${p.code} • ${p.brand || "MOTUS"}</div>
+      <div class="qty-box"><button type="button" onclick="changeQty('${p.code}',-1)">−</button><span>${p.qty}</span><button type="button" onclick="changeQty('${p.code}',1)">+</button></div>
+      <button class="remove-item" type="button" onclick="removeItem('${p.code}')">Remover este item</button>
+    </div>
+    <div class="row-price">${money(p.price*p.qty)}</div>
+  </div>`;
+}
+
+function drawerItem(p){
+  return `<div class="drawer-item">
+    <div class="drawer-thumb">${productImage(p)}</div>
+    <div>
+      <strong>${p.name}</strong>
+      <small>Qtd. ${p.qty} • Cód. ${p.code}</small>
+      <div class="drawer-actions"><span>${money(p.price*p.qty)}</span><button type="button" onclick="removeItem('${p.code}')">Remover</button></div>
+    </div>
+    <div class="qty-box"><button type="button" onclick="changeQty('${p.code}',-1)">−</button><span>${p.qty}</span><button type="button" onclick="changeQty('${p.code}',1)">+</button></div>
+  </div>`;
+}
+
+function renderCart(){
+  const qty=cartQty(), total=cartTotal();
+  document.querySelector("#cartCount").textContent=qty;
+  document.querySelector("#summaryQty").textContent=qty;
+  document.querySelector("#total").textContent=money(total);
+  document.querySelector("#drawerTotal").textContent=money(total);
+  const main=document.querySelector("#cartItems"), drawer=document.querySelector("#drawerItems");
+  if(!cart.length){
+    main.innerHTML='<div class="cart-empty">Seu pedido está vazio.<br>Escolha uma peça no catálogo para começar.</div>';
+    drawer.innerHTML='<div class="cart-empty">Nenhum item selecionado.</div>';
+  }else{
+    main.innerHTML=cart.map(cartRow).join("");
+    drawer.innerHTML=cart.map(drawerItem).join("");
+  }
+}
+
+function openDrawer(){
+  const drawer=document.querySelector("#cartDrawer");
+  drawer.classList.add("open");
+  drawer.setAttribute("aria-hidden","false");
+  document.querySelector("#drawerBackdrop").hidden=false;
+  document.body.style.overflow="hidden";
+}
+
+function closeDrawer(){
+  const drawer=document.querySelector("#cartDrawer");
+  drawer.classList.remove("open");
+  drawer.setAttribute("aria-hidden","true");
+  document.querySelector("#drawerBackdrop").hidden=true;
+  document.body.style.overflow="";
+}
+
+function checkoutWhatsApp(){
+  if(!cart.length){ alert("Seu pedido está vazio."); return; }
+  const lines=cart.map(p=>`${p.qty}x ${p.name} (cód. ${p.code}) — ${money(p.price*p.qty)}`).join("\n");
+  const total=money(cartTotal());
+  window.open(wa(`Olá, MOTUS PEÇAS! Quero solicitar este pedido:\n\n${lines}\n\nTotal: ${total}\n\nAguardo confirmação de disponibilidade, frete e pagamento.`),"_blank","noopener");
+}
+
+document.querySelector("#search").addEventListener("input",applyFilters);
+document.querySelector("#category").addEventListener("change",applyFilters);
+document.querySelector("#brand").addEventListener("change",applyFilters);
+
+document.querySelector("#clearFilters").addEventListener("click",()=>{
+  document.querySelector("#search").value="";
+  document.querySelector("#category").value="";
+  document.querySelector("#brand").value="";
+  applyFilters();
 });
-document.querySelector("#category").addEventListener("change",()=>document.querySelector("#search").dispatchEvent(new Event("input")));
-document.querySelector("#checkout").addEventListener("click",()=>{
- if(!cart.length)return alert("Adicione pelo menos uma peça ao pedido.");
- const lines=cart.map(p=>`${p.qty}x ${p.name} (cód. ${p.code}) - ${money(p.price*p.qty)}`).join("\n");
- const total=money(cart.reduce((s,p)=>s+p.price*p.qty,0));
- window.open(wa(`Olá, MOTUS PEÇAS! Quero fazer este pedido:\n\n${lines}\n\nTotal: ${total}`),"_blank");
+
+document.querySelector("#checkout").addEventListener("click",checkoutWhatsApp);
+document.querySelector("#drawerCheckout").addEventListener("click",checkoutWhatsApp);
+document.querySelector("#clearCart").addEventListener("click",clearCart);
+
+document.querySelector("#cartTrigger").addEventListener("click",openDrawer);
+document.querySelector("#drawerClose").addEventListener("click",closeDrawer);
+document.querySelector("#drawerBackdrop").addEventListener("click",closeDrawer);
+document.querySelector("#drawerViewCart").addEventListener("click",closeDrawer);
+
+document.querySelector("#homeLogo").addEventListener("click",()=>{
+  setTimeout(()=>window.scrollTo({top:0,behavior:"smooth"}),0);
 });
+
 document.querySelector("#heroWhats").href=wa("Olá, MOTUS PEÇAS! Gostaria de informações sobre peças.");
 document.querySelector("#contactWhats").href=wa("Olá, MOTUS PEÇAS! Preciso de ajuda para encontrar uma peça.");
-populateCategories();
+
+populateFilters();
+updateHeroStats();
 render();
+renderCart();
