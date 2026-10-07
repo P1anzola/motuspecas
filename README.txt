@@ -1,26 +1,9 @@
-# MOTUS PEÇAS — Site inicial
+MOTUS PEÇAS — versão com fotos
 
-Esta é uma primeira versão de catálogo + carrinho, preparada para publicação no GitHub Pages.
+Código exibido = Cod. Fabr.
+Preço exibido = Sugerido.
+Exceção: 1101017 (Corrente Comando Titan 2004-150 / WW3) = R$ 30,00.
+Também atualizado: 41300BF0CG15 (Kit Transmissão Titan 2015-160 / SMARTFOX) = R$ 65,00.
+WhatsApp: 5527999802989
 
-## Antes de publicar
-1. Abra `script.js`.
-2. Troque `WHATSAPP = "5527999802989"` pelo WhatsApp real da MOTUS, usando DDI + DDD + número, sem `+`, espaços ou símbolos.
-3. Substitua os produtos de exemplo pelos produtos reais.
-
-## Publicar no GitHub Pages
-1. Crie um repositório no GitHub.
-2. Envie `index.html`, `style.css`, `script.js` e a pasta `assets`.
-3. No repositório, abra Settings → Pages.
-4. Em Source, selecione a branch principal e a pasta `/root`.
-5. Salve e aguarde a publicação.
-6. O GitHub fornecerá o endereço público do site.
-
-## Próximas etapas
-- cadastro completo de produtos;
-- fotos reais;
-- categorias;
-- estoque;
-- painel administrativo;
-- integração com banco de dados;
-- checkout/pagamento;
-- domínio próprio (ex.: motuspecas.com.br).
+As fotos foram associadas aos códigos de fabricante quando o código da imagem permitia a identificação. Produtos sem foto correspondente continuam com o marcador MP.
