@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MOTUS PEÇAS — Referência em peças para motos. Catálogo, ofertas e atendimento pelo WhatsApp.">
+  <title>MOTUS PEÇAS | Referência em Peças</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="container nav">
+    <a class="brand" href="#inicio"><img src="assets/logo.jpeg" alt="MOTUS PEÇAS"></a>
+    <nav>
+      <a href="#inicio">Início</a>
+      <a href="#ofertas">Ofertas</a>
+      <a href="#catalogo">Catálogo</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <a class="cart" href="#carrinho">🛒 <span id="cartCount">0</span></a>
+  </div>
+</header>
+
+<main>
+<section id="inicio" class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="tag">REFERÊNCIA EM PEÇAS</span>
+      <h1>Peças para sua moto com <strong>qualidade e preço</strong>.</h1>
+      <p>Encontre sua peça, confira o preço e monte seu pedido. Atendimento rápido pelo WhatsApp.</p>
+      <div class="hero-actions">
+        <a class="btn gold" href="#catalogo">Ver catálogo</a>
+        <a class="btn outline" id="heroWhats" href="#" target="_blank">Falar no WhatsApp</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="shield">MP</div>
+      <h2>MOTUS PEÇAS</h2>
+      <p>Catálogo online • Ofertas • Pedido pelo WhatsApp</p>
+    </div>
+  </div>
+</section>
+
+<section id="ofertas" class="section">
+  <div class="container">
+    <div class="section-head">
+      <div><span class="eyebrow">DESTAQUES</span><h2>Ofertas em destaque</h2></div>
+      <a href="#catalogo">Ver todos →</a>
+    </div>
+    <div id="featured" class="products"></div>
+  </div>
+</section>
+
+<section id="catalogo" class="section light">
+  <div class="container">
+    <div class="section-head">
+      <div><span class="eyebrow">CATÁLOGO</span><h2>Encontre sua peça</h2></div>
+    </div>
+    <div class="filters">
+      <input id="search" type="search" placeholder="🔎 Pesquise por produto, aplicação ou código...">
+      <select id="category">
+        <option value="">Todas as categorias</option>
+        <option>Motor</option>
+        <option>Elétrica</option>
+        <option>Transmissão</option>
+        <option>Freio</option>
+        <option>Suspensão</option>
+      </select>
+    </div>
+    <div id="products" class="products"></div>
+  </div>
+</section>
+
+<section id="carrinho" class="section">
+  <div class="container cart-box">
+    <div>
+      <span class="eyebrow">SEU PEDIDO</span>
+      <h2>Carrinho</h2>
+      <div id="cartItems"><p class="muted">Seu carrinho está vazio.</p></div>
+    </div>
+    <aside>
+      <h3>Total</h3>
+      <div class="total" id="total">R$ 0,00</div>
+      <button class="btn gold full" id="checkout">Enviar pedido pelo WhatsApp</button>
+      <small>O pagamento pode ser configurado depois. Nesta primeira versão, o pedido é enviado para atendimento.</small>
+    </aside>
+  </div>
+</section>
+
+<section id="contato" class="contact">
+  <div class="container">
+    <h2>Precisa de ajuda para encontrar uma peça?</h2>
+    <p>Envie o código ou o modelo da moto para nossa equipe.</p>
+    <a class="btn gold" id="contactWhats" href="#" target="_blank">Chamar no WhatsApp</a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container footer-grid">
+    <img src="assets/logo.jpeg" alt="MOTUS PEÇAS">
+    <div><strong>MOTUS PEÇAS</strong><br>Referência em peças</div>
+    <div>Catálogo online<br>Atendimento pelo WhatsApp</div>
+  </div>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>
