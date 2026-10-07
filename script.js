@@ -1,4 +1,4 @@
-const WHATSAPP = "5500000000000"; // TROQUE pelo número da MOTUS, com DDI, sem + ou espaços.
+const WHATSAPP = "5527999802989"; // TROQUE pelo número da MOTUS, com DDI, sem + ou espaços.
 
 const products = [
  {code:"214655",name:"Arranque Moto Titan 2004-150",application:"Titan 150",category:"Elétrica",price:78.93,featured:true},
