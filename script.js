@@ -3,7 +3,7 @@ const WHATSAPP = "5527999802989";
 const products = [
 
   {code:"MSC41011",name:"AMORT MOTO NXR 125-150-160 BROS 15- XRE 190 17-20",application:"NXR 125 • NXR 150 • NXR 160 • BROS 15+ • XRE 190 17-20",category:"Suspensão",brand:"COFAP",price:360,image:"assets/MSC41011.jpg",featured:true},
-  {code:"CR22540M",name:"AMORT MOTO TITAN 2004-150 MOD ORIG",application:"Titan 150 2004-",category:"Suspensão",brand:"COFAP",price:170,image:"assets/CR22540M.jpg",featured:true},
+  {code:"CR22540M",name:"AMORT MOTO TITAN 2004-150 MOD ORIG",application:"Titan 150 2004-",category:"Suspensão",brand:"COFAP",price:85,image:"assets/CR22540M.jpg",featured:true},
   {code:"CFAR02CR",name:"ARO RODA TO-TITAN TDS DIANT -18X160-",application:"Titan",category:"Suspensão",brand:"CROMOFORTE",price:90,image:"assets/CFAR02CR.jpg",featured:true},
   {code:"CFAR01CR",name:"ARO RODA TO-TITAN TDS TRAS -18X185-",application:"Titan",category:"Suspensão",brand:"CROMOFORTE",price:90,image:"assets/CFAR01CR.jpg",featured:true},
   {code:"ERX6BS",name:"BATERIA MOTO 6 AMP TITAN-FAN-BROS 150 XRE300 ERBS",application:"Titan • Fan • Bros 150 • XRE 300",category:"Elétrica",brand:"ERBS",price:135,image:"assets/ERX6BS.jpg",featured:true},
